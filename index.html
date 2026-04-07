@@ -1,157 +1,636 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <title>Acesso Wi-Fi | Guest Wi-Fi</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Portal de Acesso Wi-Fi</title>
   <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
     body {
-      font-family: Arial, sans-serif;
-      max-width: 520px;
-      margin: auto;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       padding: 20px;
-      text-align: center;
-      background-color: #f5f5f5;
     }
 
     .container {
-      background: white;
-      padding: 24px;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    }
-
-    input, button {
+      background: #ffffff;
+      border-radius: 16px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+      max-width: 480px;
       width: 100%;
-      padding: 12px;
-      margin-top: 10px;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-      box-sizing: border-box;
+      overflow: hidden;
     }
 
-    button {
-      background-color: #0078D4;
+    .header {
+      background: linear-gradient(135deg, #0f3460, #533483);
+      padding: 32px 24px;
+      text-align: center;
+      color: white;
+    }
+
+    .wifi-icon {
+      font-size: 48px;
+      margin-bottom: 12px;
+      display: block;
+    }
+
+    .header h1 {
+      font-size: 22px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .header p {
+      font-size: 14px;
+      opacity: 0.85;
+    }
+
+    .welcome-box {
+      background: #f0f4ff;
+      border-left: 4px solid #0f3460;
+      margin: 24px 24px 0 24px;
+      padding: 16px;
+      border-radius: 8px;
+    }
+
+    .welcome-box h2 {
+      font-size: 16px;
+      color: #0f3460;
+      margin-bottom: 8px;
+    }
+
+    .welcome-box p {
+      font-size: 13px;
+      color: #444;
+      line-height: 1.6;
+    }
+
+    .lgpd-box {
+      background: #fff8e1;
+      border-left: 4px solid #f9a825;
+      margin: 16px 24px 0 24px;
+      padding: 16px;
+      border-radius: 8px;
+    }
+
+    .lgpd-box h3 {
+      font-size: 13px;
+      color: #e65100;
+      font-weight: 700;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .lgpd-box p {
+      font-size: 12px;
+      color: #555;
+      line-height: 1.6;
+    }
+
+    form {
+      padding: 24px;
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 6px;
+    }
+
+    label span.required {
+      color: #e53935;
+      margin-left: 2px;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"],
+    input[type="date"],
+    select {
+      width: 100%;
+      padding: 11px 14px;
+      border: 1.5px solid #ddd;
+      border-radius: 8px;
+      font-size: 14px;
+      color: #333;
+      transition: border-color 0.2s;
+      background: #fafafa;
+    }
+
+    input:focus,
+    select:focus {
+      outline: none;
+      border-color: #0f3460;
+      background: #fff;
+    }
+
+    .row {
+      display: flex;
+      gap: 12px;
+    }
+
+    .row .form-group {
+      flex: 1;
+    }
+
+    .consent-box {
+      background: #f9f9f9;
+      border: 1.5px solid #ddd;
+      border-radius: 8px;
+      padding: 14px;
+      margin-bottom: 16px;
+      max-height: 120px;
+      overflow-y: auto;
+      font-size: 12px;
+      color: #555;
+      line-height: 1.6;
+    }
+
+    .consent-check {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .consent-check input[type="checkbox"] {
+      margin-top: 2px;
+      width: 16px;
+      height: 16px;
+      accent-color: #0f3460;
+      flex-shrink: 0;
+    }
+
+    .consent-check label {
+      font-size: 13px;
+      color: #333;
+      font-weight: 400;
+      margin: 0;
+      cursor: pointer;
+    }
+
+    .btn-connect {
+      width: 100%;
+      padding: 14px;
+      background: linear-gradient(135deg, #0f3460, #533483);
       color: white;
       border: none;
-      cursor: pointer;
+      border-radius: 8px;
       font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: opacity 0.2s, transform 0.1s;
+      letter-spacing: 0.5px;
     }
 
-    button:hover {
-      background-color: #005fa3;
+    .btn-connect:hover {
+      opacity: 0.92;
+      transform: translateY(-1px);
     }
 
-    .box {
-      text-align: left;
-      font-size: 13px;
-      margin-top: 15px;
-      padding: 12px;
-      border: 1px solid #ddd;
-      border-radius: 6px;
-      background: #fafafa;
-      line-height: 1.5;
+    .btn-connect:active {
+      transform: translateY(0);
     }
 
-    .checkbox {
-      text-align: left;
-      margin-top: 14px;
-      display: flex;
-      gap: 8px;
-      align-items: flex-start;
+    .btn-connect:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
     }
 
-    .checkbox input {
-      width: auto;
-      margin-top: 3px;
+    .footer {
+      text-align: center;
+      padding: 16px 24px;
+      font-size: 11px;
+      color: #999;
+      border-top: 1px solid #eee;
     }
 
-    .checkbox label {
+    /* Success screen */
+    .success-screen {
+      display: none;
+      padding: 48px 24px;
+      text-align: center;
+    }
+
+    .success-icon {
+      font-size: 64px;
+      margin-bottom: 16px;
+    }
+
+    .success-screen h2 {
+      color: #2e7d32;
+      font-size: 22px;
+      margin-bottom: 12px;
+    }
+
+    .success-screen p {
+      color: #555;
       font-size: 14px;
+      line-height: 1.6;
+      margin-bottom: 24px;
     }
 
-    .small {
+    .redirect-msg {
+      font-size: 13px;
+      color: #888;
+    }
+
+    /* Loading spinner */
+    .spinner {
+      display: inline-block;
+      width: 18px;
+      height: 18px;
+      border: 3px solid rgba(255,255,255,0.4);
+      border-top-color: white;
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      vertical-align: middle;
+      margin-right: 8px;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .error-msg {
+      color: #e53935;
       font-size: 12px;
-      color: #666;
-      margin-top: 12px;
+      margin-top: 4px;
+      display: none;
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: #e53935;
+      color: white;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-size: 14px;
+      z-index: 9999;
+      transition: transform 0.3s ease;
+      white-space: nowrap;
+    }
+
+    .toast.show {
+      transform: translateX(-50%) translateY(0);
+    }
+
+    @media (max-width: 400px) {
+      .row {
+        flex-direction: column;
+        gap: 0;
+      }
     }
   </style>
 </head>
 <body>
+
   <div class="container">
-    <h2>Bem-vindo | Welcome</h2>
+    <div class="header">
+      <span class="wifi-icon">📶</span>
+      <h1>Acesso à Internet Wi-Fi</h1>
+      <p>Preencha seus dados para conectar</p>
+    </div>
 
-    <p>
-      Para acessar o Wi-Fi, preencha os dados abaixo.<br>
-      To access the Wi-Fi, please fill in the information below.
-    </p>
-
-    <form id="wifiForm">
-      <input type="text" id="name" name="name" placeholder="Nome completo | Full name" required>
-      <input type="email" id="email" name="email" placeholder="Email" required>
-      <input type="text" id="document" name="document" placeholder="Documento (CPF / Passaporte) | ID Number" required>
-
-      <div class="box">
-        <strong>Português:</strong><br>
-        Os dados coletados serão utilizados exclusivamente para identificação de acesso à rede Wi-Fi, conforme exigências legais aplicáveis.
-        As informações serão armazenadas de forma segura e criptografada, mantidas por período limitado conforme previsto na LGPD.
-        O acesso aos dados será restrito e somente poderá ocorrer mediante requisição judicial ou obrigação legal.
-        <br><br>
-        <strong>English:</strong><br>
-        The collected data will be used solely to identify access to the Wi-Fi network, in accordance with applicable legal requirements.
-        The information will be securely stored using encryption and retained for a limited period as required by data protection laws.
-        Access to this data is restricted and will only be granted upon legal or judicial request.
+    <!-- Formulário principal -->
+    <div id="form-section">
+      <div class="welcome-box">
+        <h2>👋 Bem-vindo!</h2>
+        <p>
+          Você está se conectando à rede Wi-Fi de visitantes. Para liberar seu acesso,
+          precisamos de algumas informações básicas de identificação. O processo é rápido
+          e seus dados ficam protegidos.
+        </p>
       </div>
 
-      <div class="checkbox">
-        <input type="checkbox" id="accept" required>
-        <label for="accept">Li e aceito os termos | I agree to the terms</label>
+      <div class="lgpd-box">
+        <h3>🔒 Aviso de Privacidade — LGPD</h3>
+        <p>
+          Em conformidade com a <strong>Lei Geral de Proteção de Dados (Lei nº 13.709/2018 — LGPD)</strong>,
+          informamos que os dados coletados neste portal são armazenados com finalidade <strong>exclusivamente investigativa</strong>,
+          podendo ser utilizados apenas em caso de solicitação por autoridade competente (judicial, policial ou administrativa)
+          para identificação do usuário responsável por determinada conexão à internet, conforme previsto no
+          <strong>Marco Civil da Internet (Lei nº 12.965/2014)</strong>, em especial seu art. 13.
+          Os dados <strong>não serão compartilhados comercialmente</strong> nem utilizados para fins de marketing.
+          O período de retenção é de <strong>até 1 (um) ano</strong>, conforme determinação legal.
+          Você pode exercer seus direitos de titular (acesso, correção ou exclusão, nos limites legais)
+          entrando em contato com o responsável pela rede.
+        </p>
       </div>
 
-      <button type="submit">Conectar | Connect</button>
-      <div class="small">Ao continuar, seus dados serão registrados para controle de acesso.</div>
-    </form>
+      <form id="portal-form" novalidate>
 
-    <iframe name="hidden_iframe" style="display:none;"></iframe>
+        <div class="form-group" style="margin-top:0; padding-top:24px; padding-left:0; padding-right:0; margin-left:24px; margin-right:24px;">
+          <!-- spacer handled by form padding -->
+        </div>
 
-    <form
-      id="sheetForm"
-      action="https://script.google.com/macros/s/AKfycbykKs_sQknWUplOjsaL3YjD8wi2qd9z-Mdfa6Bn0Qe5RJy4VVg3hQtECSrxeCFs6wI1/exec"
-      method="GET"
-      target="hidden_iframe"
-      style="display:none;"
-    >
-      <input type="hidden" name="name" id="sheet_name">
-      <input type="hidden" name="email" id="sheet_email">
-      <input type="hidden" name="document" id="sheet_document">
-    </form>
+        <div style="padding: 0 24px;">
+
+          <div class="form-group">
+            <label for="nome">Nome completo <span class="required">*</span></label>
+            <input type="text" id="nome" name="nome" placeholder="Seu nome completo" autocomplete="name" required />
+            <span class="error-msg" id="err-nome">Por favor, informe seu nome completo.</span>
+          </div>
+
+          <div class="form-group">
+            <label for="cpf">CPF <span class="required">*</span></label>
+            <input type="text" id="cpf" name="cpf" placeholder="000.000.000-00" maxlength="14" required />
+            <span class="error-msg" id="err-cpf">CPF inválido ou não informado.</span>
+          </div>
+
+          <div class="row">
+            <div class="form-group">
+              <label for="nascimento">Data de nascimento <span class="required">*</span></label>
+              <input type="date" id="nascimento" name="nascimento" required />
+              <span class="error-msg" id="err-nascimento">Informe sua data de nascimento.</span>
+            </div>
+            <div class="form-group">
+              <label for="telefone">Telefone</label>
+              <input type="tel" id="telefone" name="telefone" placeholder="(00) 00000-0000" maxlength="15" />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="email">E-mail <span class="required">*</span></label>
+            <input type="email" id="email" name="email" placeholder="seu@email.com" autocomplete="email" required />
+            <span class="error-msg" id="err-email">E-mail inválido ou não informado.</span>
+          </div>
+
+          <div class="form-group">
+            <label for="doc_tipo">Documento de identidade</label>
+            <select id="doc_tipo" name="doc_tipo">
+              <option value="">Selecione (opcional)</option>
+              <option value="RG">RG</option>
+              <option value="CNH">CNH</option>
+              <option value="Passaporte">Passaporte</option>
+              <option value="RNE">RNE (Estrangeiro)</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="doc_numero">Número do documento</label>
+            <input type="text" id="doc_numero" name="doc_numero" placeholder="Número do documento (opcional)" />
+          </div>
+
+          <!-- Termo de consentimento -->
+          <div class="consent-box">
+            <strong>Termo de Consentimento para Coleta de Dados</strong><br/><br/>
+            Ao marcar a caixa abaixo, você declara que leu e concorda com o aviso de privacidade
+            apresentado neste portal. Você autoriza o armazenamento dos dados informados
+            (nome, CPF, data de nascimento, e-mail, telefone e documento de identidade)
+            pelo período de até 1 (um) ano, com a finalidade exclusiva de atender
+            eventuais requisições legais de identificação de usuários de internet,
+            nos termos do art. 13 da Lei nº 12.965/2014 (Marco Civil da Internet)
+            e em conformidade com a Lei nº 13.709/2018 (LGPD).<br/><br/>
+            O não fornecimento desses dados implica impossibilidade de acesso à rede Wi-Fi,
+            pois a coleta é necessária para cumprimento de obrigação legal do provedor.<br/><br/>
+            Você poderá solicitar acesso, correção ou informações sobre seus dados a qualquer
+            momento, contatando o responsável pela rede Wi-Fi.
+          </div>
+
+          <div class="consent-check">
+            <input type="checkbox" id="consent" name="consent" />
+            <label for="consent">
+              Li e concordo com o <strong>Termo de Consentimento</strong> e o
+              <strong>Aviso de Privacidade (LGPD)</strong> acima, autorizando o
+              armazenamento dos meus dados para fins legais.
+            </label>
+          </div>
+
+          <button type="submit" class="btn-connect" id="btn-submit">
+            🔓 Conectar ao Wi-Fi
+          </button>
+
+        </div>
+
+      </form>
+    </div>
+
+    <!-- Tela de sucesso -->
+    <div class="success-screen" id="success-section">
+      <div class="success-icon">✅</div>
+      <h2>Conexão liberada!</h2>
+      <p>
+        Seus dados foram registrados com segurança.<br/>
+        Aproveite o acesso à internet.
+      </p>
+      <p class="redirect-msg" id="redirect-countdown"></p>
+    </div>
+
+    <div class="footer">
+      Seus dados são protegidos pela LGPD · Lei nº 13.709/2018
+    </div>
   </div>
 
-  <script>
-    const params = new URLSearchParams(window.location.search);
-    const baseGrantUrl = params.get("base_grant_url");
-    const continueUrl = params.get("user_continue_url");
+  <div class="toast" id="toast"></div>
 
-    document.getElementById("wifiForm").addEventListener("submit", function(e) {
+  <script>
+    // ─────────────────────────────────────────────
+    // CONFIGURAÇÕES — edite aqui
+    // ─────────────────────────────────────────────
+
+    // Opção A: Google Apps Script Web App URL
+    // Crie um Apps Script que receba POST e salve no Sheets.
+    // Substitua pela URL do seu deployment:
+    const APPS_SCRIPT_URL = "https://script.google.com/macros/s/SEU_DEPLOYMENT_ID_AQUI/exec";
+
+    // URL de redirecionamento após sucesso (página de success do Meraki ou qualquer URL)
+    // O Meraki passa o parâmetro base_grant_url no captive portal.
+    // Exemplo: https://n143.network-auth.com/splash/grant?...
+    // Deixe "" para não redirecionar automaticamente (só mostrar tela de sucesso)
+    const MERAKI_SUCCESS_URL = getMerakiGrantUrl();
+
+    function getMerakiGrantUrl() {
+      const params = new URLSearchParams(window.location.search);
+      // Meraki envia base_grant_url como parâmetro
+      return params.get("base_grant_url") || params.get("continue_url") || "";
+    }
+
+    // ─────────────────────────────────────────────
+    // MÁSCARA CPF
+    // ─────────────────────────────────────────────
+    document.getElementById("cpf").addEventListener("input", function (e) {
+      let v = e.target.value.replace(/\D/g, "").substring(0, 11);
+      if (v.length > 9) v = v.replace(/(\d{3})(\d{3})(\d{3})(\d{0,2})/, "$1.$2.$3-$4");
+      else if (v.length > 6) v = v.replace(/(\d{3})(\d{3})(\d{0,3})/, "$1.$2.$3");
+      else if (v.length > 3) v = v.replace(/(\d{3})(\d{0,3})/, "$1.$2");
+      e.target.value = v;
+    });
+
+    // ─────────────────────────────────────────────
+    // MÁSCARA TELEFONE
+    // ─────────────────────────────────────────────
+    document.getElementById("telefone").addEventListener("input", function (e) {
+      let v = e.target.value.replace(/\D/g, "").substring(0, 11);
+      if (v.length > 6) v = v.replace(/(\d{2})(\d{5})(\d{0,4})/, "($1) $2-$3");
+      else if (v.length > 2) v = v.replace(/(\d{2})(\d{0,5})/, "($1) $2");
+      e.target.value = v;
+    });
+
+    // ─────────────────────────────────────────────
+    // VALIDAÇÃO CPF
+    // ─────────────────────────────────────────────
+    function validarCPF(cpf) {
+      cpf = cpf.replace(/\D/g, "");
+      if (cpf.length !== 11 || /^(\d)\1+$/.test(cpf)) return false;
+      let soma = 0, resto;
+      for (let i = 1; i <= 9; i++) soma += parseInt(cpf[i - 1]) * (11 - i);
+      resto = (soma * 10) % 11;
+      if (resto === 10 || resto === 11) resto = 0;
+      if (resto !== parseInt(cpf[9])) return false;
+      soma = 0;
+      for (let i = 1; i <= 10; i++) soma += parseInt(cpf[i - 1]) * (12 - i);
+      resto = (soma * 10) % 11;
+      if (resto === 10 || resto === 11) resto = 0;
+      return resto === parseInt(cpf[10]);
+    }
+
+    // ─────────────────────────────────────────────
+    // TOAST
+    // ─────────────────────────────────────────────
+    function showToast(msg, color = "#e53935") {
+      const t = document.getElementById("toast");
+      t.textContent = msg;
+      t.style.background = color;
+      t.classList.add("show");
+      setTimeout(() => t.classList.remove("show"), 4000);
+    }
+
+    // ─────────────────────────────────────────────
+    // SHOW/HIDE ERRORS
+    // ─────────────────────────────────────────────
+    function setError(id, show) {
+      document.getElementById(id).style.display = show ? "block" : "none";
+      const field = document.getElementById(id.replace("err-", ""));
+      if (field) field.style.borderColor = show ? "#e53935" : "#ddd";
+    }
+
+    // ─────────────────────────────────────────────
+    // SUCESSO
+    // ─────────────────────────────────────────────
+    function showSuccess() {
+      document.getElementById("form-section").style.display = "none";
+      const ss = document.getElementById("success-section");
+      ss.style.display = "block";
+
+      if (MERAKI_SUCCESS_URL) {
+        let secs = 5;
+        const el = document.getElementById("redirect-countdown");
+        el.textContent = `Redirecionando em ${secs} segundos...`;
+        const iv = setInterval(() => {
+          secs--;
+          if (secs <= 0) {
+            clearInterval(iv);
+            window.location.href = MERAKI_SUCCESS_URL;
+          } else {
+            el.textContent = `Redirecionando em ${secs} segundos...`;
+          }
+        }, 1000);
+      }
+    }
+
+    // ─────────────────────────────────────────────
+    // SUBMIT
+    // ─────────────────────────────────────────────
+    document.getElementById("portal-form").addEventListener("submit", async function (e) {
       e.preventDefault();
 
-      if (!document.getElementById("accept").checked) {
-        alert("Você precisa aceitar os termos | You must accept the terms");
-        return;
+      const nome = document.getElementById("nome").value.trim();
+      const cpf = document.getElementById("cpf").value.trim();
+      const nascimento = document.getElementById("nascimento").value;
+      const email = document.getElementById("email").value.trim();
+      const telefone = document.getElementById("telefone").value.trim();
+      const doc_tipo = document.getElementById("doc_tipo").value;
+      const doc_numero = document.getElementById("doc_numero").value.trim();
+      const consent = document.getElementById("consent").checked;
+
+      // Validação
+      let hasError = false;
+
+      if (nome.length < 3) { setError("err-nome", true); hasError = true; } else setError("err-nome", false);
+      if (!validarCPF(cpf)) { setError("err-cpf", true); hasError = true; } else setError("err-cpf", false);
+      if (!nascimento) { setError("err-nascimento", true); hasError = true; } else setError("err-nascimento", false);
+
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) { setError("err-email", true); hasError = true; } else setError("err-email", false);
+
+      if (!consent) {
+        showToast("⚠️ Você deve aceitar o Termo de Consentimento para continuar.");
+        hasError = true;
       }
 
-      document.getElementById("sheet_name").value = document.getElementById("name").value;
-      document.getElementById("sheet_email").value = document.getElementById("email").value;
-      document.getElementById("sheet_document").value = document.getElementById("document").value;
+      if (hasError) return;
 
-      document.getElementById("sheetForm").submit();
+      // Coleta metadados técnicos (IPs, MAC não são acessíveis via JS puro)
+      const timestamp = new Date().toISOString();
+      const userAgent = navigator.userAgent;
 
-      setTimeout(function() {
-        if (baseGrantUrl && continueUrl) {
-          window.location.href = baseGrantUrl + "?continue_url=" + encodeURIComponent(continueUrl);
-        } else {
-          alert("Dados enviados com sucesso (modo teste).");
-        }
-      }, 1500);
+      // Parâmetros Meraki disponíveis via query string
+      const urlParams = new URLSearchParams(window.location.search);
+      const clientMac = urlParams.get("client_mac") || "N/A";
+      const clientIp = urlParams.get("client_ip") || "N/A";
+      const nodeMac = urlParams.get("node_mac") || "N/A";
+
+      const payload = {
+        timestamp,
+        nome,
+        cpf,
+        nascimento,
+        email,
+        telefone,
+        doc_tipo,
+        doc_numero,
+        client_mac: clientMac,
+        client_ip: clientIp,
+        node_mac: nodeMac,
+        user_agent: userAgent,
+        base_grant_url: MERAKI_SUCCESS_URL || "N/A"
+      };
+
+      // UI Loading
+      const btn = document.getElementById("btn-submit");
+      btn.disabled = true;
+      btn.innerHTML = '<span class="spinner"></span>Conectando...';
+
+      try {
+        // Envio para Google Apps Script (que salva no Sheets)
+        const response = await fetch(APPS_SCRIPT_URL, {
+          method: "POST",
+          mode: "no-cors", // necessário para Apps Script de outro domínio
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+
+        // com no-cors não temos acesso ao response body, então assumimos sucesso
+        showSuccess();
+
+      } catch (err) {
+        console.error(err);
+        showToast("❌ Erro ao registrar. Tente novamente.");
+        btn.disabled = false;
+        btn.innerHTML = "🔓 Conectar ao Wi-Fi";
+      }
     });
   </script>
 </body>
