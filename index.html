@@ -99,7 +99,7 @@
     }
 
     form {
-      padding: 24px;
+      padding: 0;
     }
 
     .form-group {
@@ -341,11 +341,7 @@
 
       <form id="portal-form" novalidate>
 
-        <div class="form-group" style="margin-top:0; padding-top:24px; padding-left:0; padding-right:0; margin-left:24px; margin-right:24px;">
-          <!-- spacer handled by form padding -->
-        </div>
-
-        <div style="padding: 0 24px;">
+        <div style="padding: 24px;">
 
           <div class="form-group">
             <label for="nome">Nome completo <span class="required">*</span></label>
@@ -453,7 +449,7 @@
     // Opção A: Google Apps Script Web App URL
     // Crie um Apps Script que receba POST e salve no Sheets.
     // Substitua pela URL do seu deployment:
-    const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxuPUYUuZgoBFr1YOCY7NPn4VgzJZaKFKylgO6VRa04zsmM7sXvy55aul6UKQrVZCP1/exec";
+    const APPS_SCRIPT_URL = "https://script.google.com/macros/s/SEU_DEPLOYMENT_ID_AQUI/exec";
 
     // URL de redirecionamento após sucesso (página de success do Meraki ou qualquer URL)
     // O Meraki passa o parâmetro base_grant_url no captive portal.
@@ -622,7 +618,10 @@
           body: JSON.stringify(payload)
         });
 
-        // com no-cors não temos acesso ao response body, então assumimos sucesso
+        // NOTA: com mode "no-cors" não temos acesso ao response body.
+        // O Apps Script recebe os dados normalmente, mas não conseguimos confirmar
+        // a resposta aqui. Se o APPS_SCRIPT_URL estiver correto e o script publicado,
+        // os dados são salvos. Em caso de URL inválida, o erro é silencioso.
         showSuccess();
 
       } catch (err) {
