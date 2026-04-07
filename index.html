@@ -1,14 +1,12 @@
-}
 <!DOCTYPE html>
 <html>
 <head>
   <meta charset="UTF-8">
   <title>Acesso Wi-Fi | Guest Wi-Fi</title>
-
   <style>
     body {
       font-family: Arial, sans-serif;
-      max-width: 500px;
+      max-width: 520px;
       margin: auto;
       padding: 20px;
       text-align: center;
@@ -17,17 +15,18 @@
 
     .container {
       background: white;
-      padding: 20px;
+      padding: 24px;
       border-radius: 10px;
       box-shadow: 0 0 10px rgba(0,0,0,0.1);
     }
 
     input, button {
       width: 100%;
-      padding: 10px;
+      padding: 12px;
       margin-top: 10px;
-      border-radius: 5px;
+      border-radius: 6px;
       border: 1px solid #ccc;
+      box-sizing: border-box;
     }
 
     button {
@@ -46,15 +45,28 @@
       text-align: left;
       font-size: 13px;
       margin-top: 15px;
-      padding: 10px;
+      padding: 12px;
       border: 1px solid #ddd;
-      border-radius: 5px;
+      border-radius: 6px;
       background: #fafafa;
+      line-height: 1.5;
     }
 
     .checkbox {
       text-align: left;
-      margin-top: 10px;
+      margin-top: 14px;
+      display: flex;
+      gap: 8px;
+      align-items: flex-start;
+    }
+
+    .checkbox input {
+      width: auto;
+      margin-top: 3px;
+    }
+
+    .checkbox label {
+      font-size: 14px;
     }
 
     h2 {
@@ -64,91 +76,95 @@
     p {
       font-size: 14px;
     }
+
+    .small {
+      font-size: 12px;
+      color: #666;
+      margin-top: 12px;
+    }
   </style>
 </head>
-
 <body>
+  <div class="container">
+    <h2>Bem-vindo | Welcome</h2>
 
-<div class="container">
+    <p>
+      Para acessar o Wi-Fi, preencha os dados abaixo.<br>
+      To access the Wi-Fi, please fill in the information below.
+    </p>
 
-<h2>Bem-vindo | Welcome</h2>
+    <form id="wifiForm">
+      <input type="text" id="name" name="name" placeholder="Nome completo | Full name" required>
+      <input type="email" id="email" name="email" placeholder="Email" required>
+      <input type="text" id="document" name="document" placeholder="Documento (CPF / Passaporte) | ID Number" required>
 
-<p>
-Para acessar o Wi-Fi, preencha os dados abaixo.<br>
-To access the Wi-Fi, please fill in the information below.
-</p>
+      <div class="box">
+        <strong>Português:</strong><br>
+        Os dados coletados serão utilizados exclusivamente para identificação de acesso à rede Wi-Fi, conforme exigências legais aplicáveis.
+        As informações serão armazenadas de forma segura e criptografada, mantidas por período limitado conforme previsto na LGPD.
+        O acesso aos dados será restrito e somente poderá ocorrer mediante requisição judicial ou obrigação legal.
+        <br><br>
+        <strong>English:</strong><br>
+        The collected data will be used solely to identify access to the Wi-Fi network, in accordance with applicable legal requirements.
+        The information will be securely stored using encryption and retained for a limited period as required by data protection laws.
+        Access to this data is restricted and will only be granted upon legal or judicial request.
+      </div>
 
-<form id="wifiForm">
+      <div class="checkbox">
+        <input type="checkbox" id="accept" required>
+        <label for="accept">Li e aceito os termos | I agree to the terms</label>
+      </div>
 
-  <input type="text" name="name" placeholder="Nome completo | Full name" required>
+      <button type="submit">Conectar | Connect</button>
+      <div class="small">Ao continuar, seus dados serão registrados para controle de acesso.</div>
+    </form>
 
-  <input type="email" name="email" placeholder="Email" required>
+    <form
+      id="sheetForm"
+      action="https://script.google.com/macros/s/AKfycbykKs_sQknWUplOjsaL3YjD8wi2qd9z-Mdfa6Bn0Qe5RJy4VVg3hQtECSrxeCFs6wI1/exec"
+      method="POST"
+      target="hidden_iframe"
+      style="display:none;"
+    >
+      <input type="hidden" name="name" id="sheet_name">
+      <input type="hidden" name="email" id="sheet_email">
+      <input type="hidden" name="document" id="sheet_document">
+    </form>
 
-  <input type="text" name="document" placeholder="Documento (CPF / Passaporte) | ID Number" required>
-
-  <div class="box">
-    <strong>Português:</strong><br>
-    Os dados coletados serão utilizados exclusivamente para identificação de acesso à rede Wi-Fi, conforme exigências legais aplicáveis. 
-    As informações serão armazenadas de forma segura e criptografada, mantidas por período limitado conforme previsto na LGPD. 
-    O acesso aos dados será restrito e somente poderá ocorrer mediante requisição judicial ou obrigação legal.<br><br>
-
-    <strong>English:</strong><br>
-    The collected data will be used solely for identifying access to the Wi-Fi network, in accordance with applicable legal requirements. 
-    The information will be securely stored using encryption and retained for a limited period as required by data protection laws. 
-    Access to this data is restricted and will only be granted upon legal or judicial request.
+    <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"></iframe>
   </div>
 
-  <div class="checkbox">
-    <input type="checkbox" id="accept" required>
-    <label for="accept">
-      Li e aceito os termos | I agree to the terms
-    </label>
-  </div>
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const baseGrantUrl = params.get("base_grant_url");
+    const continueUrl = params.get("user_continue_url");
 
-  <button type="submit">Conectar | Connect</button>
+    document.getElementById("wifiForm").addEventListener("submit", function(e) {
+      e.preventDefault();
 
-</form>
+      if (!document.getElementById("accept").checked) {
+        alert("Você precisa aceitar os termos | You must accept the terms");
+        return;
+      }
 
-</div>
+      const name = document.getElementById("name").value;
+      const email = document.getElementById("email").value;
+      const documentValue = document.getElementById("document").value;
 
-<script>
-  const params = new URLSearchParams(window.location.search);
+      document.getElementById("sheet_name").value = name;
+      document.getElementById("sheet_email").value = email;
+      document.getElementById("sheet_document").value = documentValue;
 
-  const baseGrantUrl = params.get("base_grant_url");
-  const continueUrl = params.get("user_continue_url");
+      document.getElementById("sheetForm").submit();
 
-  document.getElementById("wifiForm").addEventListener("submit", async function(e) {
-    e.preventDefault();
-
-    if (!document.getElementById("accept").checked) {
-      alert("Você precisa aceitar os termos | You must accept the terms");
-      return;
-    }
-
-    const formBody = new URLSearchParams({
-      name: document.querySelector('[name="name"]').value,
-      email: document.querySelector('[name="email"]').value,
-      document: document.querySelector('[name="document"]').value
+      setTimeout(function() {
+        if (baseGrantUrl && continueUrl) {
+          window.location.href = baseGrantUrl + "?continue_url=" + encodeURIComponent(continueUrl);
+        } else {
+          alert("Dados enviados com sucesso (modo teste).");
+        }
+      }, 1500);
     });
-
-    try {
-      await fetch("https://script.google.com/macros/s/AKfycbykKs_sQknWUplOjsaL3YjD8wi2qd9z-Mdfa6Bn0Qe5RJy4VVg3hQtECSrxeCFs6wI1/exec", {
-        method: "POST",
-        body: formBody
-      });
-    } catch (err) {
-      console.error("Erro ao salvar:", err);
-      alert("Erro ao salvar os dados na planilha.");
-      return;
-    }
-
-    if (baseGrantUrl && continueUrl) {
-      window.location.href = baseGrantUrl + "?continue_url=" + encodeURIComponent(continueUrl);
-    } else {
-      alert("Dados enviados com sucesso (modo teste)");
-    }
-  });
-</script>
-  
+  </script>
 </body>
-</html
+</html>
