@@ -30,6 +30,10 @@
       console.error("Erro ao salvar:", err);
     }
 
-    window.location.href = baseGrantUrl + "?continue_url=" + encodeURIComponent(continueUrl);
+    if (baseGrantUrl && continueUrl) {
+      window.location.href = baseGrantUrl + "?continue_url=" + encodeURIComponent(continueUrl);
+    } else {
+      alert("Dados enviados com sucesso. Teste fora do Meraki detectado.");
+    }
   });
 </script>
