@@ -1,0 +1,107 @@
+}
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Acesso Wi-Fi | Guest Wi-Fi</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 500px;
+      margin: auto;
+      padding: 20px;
+      text-align: center;
+    }
+    input, button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+    }
+    .box {
+      text-align: left;
+      font-size: 13px;
+      margin-top: 15px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      background: #f9f9f9;
+    }
+    .checkbox {
+      text-align: left;
+      margin-top: 10px;
+    }
+    button {
+      background-color: #0078D4;
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    button:hover {
+      background-color: #005fa3;
+    }
+  </style>
+</head>
+<body>
+
+<h2>Bem-vindo | Welcome</h2>
+
+<p>
+Para acessar o Wi-Fi, preencha os dados abaixo.<br>
+To access the Wi-Fi, please fill in the information below.
+</p>
+
+<form id="wifiForm">
+
+  <input type="text" name="name" placeholder="Nome completo | Full name" required>
+
+  <input type="email" name="email" placeholder="Email" required>
+
+  <input type="text" name="document" placeholder="Documento (CPF / Passaporte) | ID Number" required>
+
+  <div class="box">
+    <strong>Português:</strong><br>
+    Os dados coletados serão utilizados exclusivamente para identificação de acesso à rede Wi-Fi, conforme exigências legais aplicáveis. 
+    As informações serão armazenadas de forma segura e criptografada, mantidas por período limitado conforme previsto na LGPD. 
+    O acesso aos dados será restrito e somente poderá ocorrer mediante requisição judicial ou obrigação legal.<br><br>
+
+    <strong>English:</strong><br>
+    The collected data will be used solely for identifying access to the Wi-Fi network, in accordance with applicable legal requirements. 
+    The information will be securely stored using encryption and retained for a limited period as required by data protection laws. 
+    Access to this data is restricted and will only be granted upon legal or judicial request.
+  </div>
+
+  <div class="checkbox">
+    <input type="checkbox" id="accept" required>
+    <label for="accept">
+      Li e aceito os termos | I agree to the terms
+    </label>
+  </div>
+
+  <button type="submit">Conectar | Connect</button>
+
+</form>
+
+<script>
+  const params = new URLSearchParams(window.location.search);
+
+  const baseGrantUrl = params.get("base_grant_url");
+  const continueUrl = params.get("user_continue_url");
+
+  document.getElementById("wifiForm").addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    if (!document.getElementById("accept").checked) {
+      alert("Você precisa aceitar os termos | You must accept the terms");
+      return;
+    }
+
+    // Aqui depois vamos integrar com Google Sheets
+
+    // Liberação Meraki
+    window.location.href = baseGrantUrl + "?continue_url=" + encodeURIComponent(continueUrl);
+  });
+</script>
+
+</body>
+</html
