@@ -125,22 +125,21 @@ To access the Wi-Fi, please fill in the information below.
       return;
     }
 
-    const formData = {
+    const formBody = new URLSearchParams({
       name: document.querySelector('[name="name"]').value,
       email: document.querySelector('[name="email"]').value,
       document: document.querySelector('[name="document"]').value
-    };
+    });
 
     try {
       await fetch("https://script.google.com/macros/s/AKfycbykKs_sQknWUplOjsaL3YjD8wi2qd9z-Mdfa6Bn0Qe5RJy4VVg3hQtECSrxeCFs6wI1/exec", {
         method: "POST",
-        body: JSON.stringify(formData),
-        headers: {
-          "Content-Type": "application/json"
-        }
+        body: formBody
       });
     } catch (err) {
       console.error("Erro ao salvar:", err);
+      alert("Erro ao salvar os dados na planilha.");
+      return;
     }
 
     if (baseGrantUrl && continueUrl) {
@@ -150,6 +149,6 @@ To access the Wi-Fi, please fill in the information below.
     }
   });
 </script>
-
+  
 </body>
 </html
