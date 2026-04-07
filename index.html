@@ -69,14 +69,6 @@
       font-size: 14px;
     }
 
-    h2 {
-      margin-bottom: 10px;
-    }
-
-    p {
-      font-size: 14px;
-    }
-
     .small {
       font-size: 12px;
       color: #666;
@@ -119,10 +111,12 @@
       <div class="small">Ao continuar, seus dados serão registrados para controle de acesso.</div>
     </form>
 
+    <iframe name="hidden_iframe" style="display:none;"></iframe>
+
     <form
       id="sheetForm"
       action="https://script.google.com/macros/s/AKfycbykKs_sQknWUplOjsaL3YjD8wi2qd9z-Mdfa6Bn0Qe5RJy4VVg3hQtECSrxeCFs6wI1/exec"
-      method="POST"
+      method="GET"
       target="hidden_iframe"
       style="display:none;"
     >
@@ -130,8 +124,6 @@
       <input type="hidden" name="email" id="sheet_email">
       <input type="hidden" name="document" id="sheet_document">
     </form>
-
-    <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"></iframe>
   </div>
 
   <script>
@@ -147,13 +139,9 @@
         return;
       }
 
-      const name = document.getElementById("name").value;
-      const email = document.getElementById("email").value;
-      const documentValue = document.getElementById("document").value;
-
-      document.getElementById("sheet_name").value = name;
-      document.getElementById("sheet_email").value = email;
-      document.getElementById("sheet_document").value = documentValue;
+      document.getElementById("sheet_name").value = document.getElementById("name").value;
+      document.getElementById("sheet_email").value = document.getElementById("email").value;
+      document.getElementById("sheet_document").value = document.getElementById("document").value;
 
       document.getElementById("sheetForm").submit();
 
