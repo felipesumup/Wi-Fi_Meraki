@@ -1,15 +1,244 @@
 <!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SumUp Wi-Fi</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #0f1923 0%, #1a2e44 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .container {
+      background: #ffffff;
+      border-radius: 16px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+      max-width: 480px;
+      width: 100%;
+      overflow: hidden;
+    }
+
+    .header {
+      background: linear-gradient(135deg, #1a73e8, #0d47a1);
+      padding: 32px 24px;
+      text-align: center;
+      color: white;
+    }
+
+    .header .wifi-icon {
+      font-size: 48px;
+      margin-bottom: 12px;
+      display: block;
+    }
+
+    .header h1 {
+      font-size: 26px;
+      font-weight: 700;
+      letter-spacing: 1px;
+    }
+
+    .header p {
+      font-size: 14px;
+      opacity: 0.85;
+      margin-top: 6px;
+    }
+
+    .form-body {
+      padding: 32px 28px;
+    }
+
+    .form-body p.intro {
+      font-size: 14px;
+      color: #555;
+      margin-bottom: 24px;
+      line-height: 1.6;
+    }
+
+    .form-group {
+      margin-bottom: 18px;
+    }
+
+    label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 6px;
+    }
+
+    input[type="text"],
+    input[type="email"] {
+      width: 100%;
+      padding: 11px 14px;
+      border: 1.5px solid #d0d7de;
+      border-radius: 8px;
+      font-size: 14px;
+      color: #222;
+      transition: border-color 0.2s;
+      outline: none;
+      background: #fafafa;
+    }
+
+    input:focus {
+      border-color: #1a73e8;
+      background: #fff;
+    }
+
+    input.error-field {
+      border-color: #e53935;
+    }
+
+    .error-msg {
+      color: #e53935;
+      font-size: 12px;
+      margin-top: 4px;
+      display: none;
+    }
+
+    .mac-info {
+      background: #f0f4ff;
+      border: 1px solid #c3d4f7;
+      border-radius: 8px;
+      padding: 12px 14px;
+      font-size: 13px;
+      color: #3a5ba0;
+      margin-bottom: 20px;
+    }
+
+    .mac-info span {
+      font-weight: 600;
+    }
+
+    button[type="submit"] {
+      width: 100%;
+      background: linear-gradient(135deg, #1a73e8, #0d47a1);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 14px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity 0.2s, transform 0.1s;
+      margin-top: 6px;
+    }
+
+    button[type="submit"]:hover {
+      opacity: 0.9;
+      transform: translateY(-1px);
+    }
+
+    button[type="submit"]:active {
+      transform: translateY(0);
+    }
+
+    .footer {
+      text-align: center;
+      padding: 14px 24px 20px;
+      font-size: 11px;
+      color: #aaa;
+      border-top: 1px solid #f0f0f0;
+    }
+
+    .success-screen {
+      display: none;
+      padding: 48px 28px;
+      text-align: center;
+    }
+
+    .success-screen .check {
+      font-size: 64px;
+      margin-bottom: 16px;
+    }
+
+    .success-screen h2 {
+      font-size: 22px;
+      font-weight: 700;
+      color: #1a73e8;
+      margin-bottom: 10px;
+    }
+
+    .success-screen p {
+      font-size: 14px;
+      color: #555;
+      line-height: 1.6;
+    }
+
+    button.loading {
+      opacity: 0.7;
+      cursor: not-allowed;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <div class="header">
+    <span class="wifi-icon">📶</span>
+    <h1>SumUp Wi-Fi</h1>
+    <p>Rede corporativa para dispositivos MAC OSX</p>
+  </div>
+
+  <div class="form-body" id="formSection">
+    <p class="intro">
+      Para prosseguir com a conexão à internet, por favor preencha os dados abaixo.
+    </p>
+
+    <div class="mac-info" id="macDisplay">
+      🖥️ Dispositivo identificado: <span id="macValue">detectando...</span>
+    </div>
+
+    <form id="wifiForm" novalidate>
+      <div class="form-group">
+        <label for="nome">Nome completo *</label>
+        <input type="text" id="nome" placeholder="Seu nome completo" />
+        <div class="error-msg" id="erroNome">Por favor, informe seu nome completo.</div>
+      </div>
+
+      <div class="form-group">
+        <label for="email">E-mail corporativo *</label>
+        <input type="email" id="email" placeholder="voce@sumup.com" />
+        <div class="error-msg" id="erroEmail">Informe um e-mail válido com domínio @sumup.com.</div>
+      </div>
+
+      <button type="submit" id="btnConectar">🔓 Conectar ao Wi-Fi</button>
+    </form>
+  </div>
+
+  <div class="success-screen" id="successScreen">
+    <div class="check">✅</div>
+    <h2>Conexão liberada!</h2>
+    <p>Seus dados foram registrados com segurança.<br>Aproveite o acesso à internet.</p>
+  </div>
+
+  <div class="footer">
+    SumUp © 2026 · Rede protegida
+  </div>
+</div>
+
+<script>
+  const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyCPa_1SBUpwX6bzMlrwt2ptVJ9lEU3Cff8hGEHW0hsZ_-TqMYnlljjLEuby50hqgHT/exec";
+
+  function getUrlParam(name) {
+    const params = new URLSearchParams(window.location.search);
     return params.get(name) || "N/A";
   }
 
-  const clientMac  = getUrlParam("client_mac");
-  const continueUrl = getUrlParam("continue_url"); // ✅ URL de liberação do Meraki
+  const clientMac   = getUrlParam("client_mac");
+  const continueUrl = getUrlParam("continue_url");
 
   document.getElementById("macValue").textContent = clientMac !== "N/A"
     ? clientMac
     : "não disponível (simulação)";
 
-  // Validação e envio
   document.getElementById("wifiForm").addEventListener("submit", async function(e) {
     e.preventDefault();
 
@@ -17,20 +246,15 @@
     const email = document.getElementById("email");
     let valid = true;
 
-    // Reset erros
-    [nome, email].forEach(f => {
-      f.classList.remove("error-field");
-    });
+    [nome, email].forEach(f => f.classList.remove("error-field"));
     document.querySelectorAll(".error-msg").forEach(el => el.style.display = "none");
 
-    // Valida nome
     if (!nome.value.trim() || nome.value.trim().split(" ").length < 2) {
       nome.classList.add("error-field");
       document.getElementById("erroNome").style.display = "block";
       valid = false;
     }
 
-    // Valida e-mail @sumup.com
     const emailVal = email.value.trim().toLowerCase();
     if (!emailVal.endsWith("@sumup.com")) {
       email.classList.add("error-field");
@@ -40,13 +264,11 @@
 
     if (!valid) return;
 
-    // Botão loading
     const btn = document.getElementById("btnConectar");
     btn.textContent = "Conectando...";
     btn.classList.add("loading");
     btn.disabled = true;
 
-    // Payload para o Google Sheets
     const payload = {
       nome:      nome.value.trim(),
       email:     emailVal,
@@ -57,7 +279,6 @@
       ssid:      getUrlParam("ssid")
     };
 
-    // Envia dados para o Google Sheets (sem bloquear o fluxo)
     try {
       await fetch(APPS_SCRIPT_URL, {
         method: "POST",
@@ -69,11 +290,9 @@
       console.warn("Erro ao registrar dados:", err);
     }
 
-    // ✅ REDIRECIONA para o Meraki confirmar a autenticação e liberar a internet
     if (continueUrl && continueUrl !== "N/A") {
       window.location.href = continueUrl;
     } else {
-      // Fallback: exibe tela de sucesso se não houver continue_url (ex: testes locais)
       document.getElementById("formSection").style.display = "none";
       document.getElementById("successScreen").style.display = "block";
     }
