@@ -279,6 +279,7 @@
       ssid:      getUrlParam("ssid")
     };
 
+    // Envia dados para o Google Sheets
     try {
       await fetch(APPS_SCRIPT_URL, {
         method: "POST",
@@ -290,8 +291,13 @@
       console.warn("Erro ao registrar dados:", err);
     }
 
+    // ✅ Submit via formulário HTML — funciona no Captive Portal nativo do Mac
     if (continueUrl && continueUrl !== "N/A") {
-      window.location.href = continueUrl;
+      const form = document.createElement("form");
+      form.method = "POST";
+      form.action = continueUrl;
+      document.body.appendChild(form);
+      form.submit();
     } else {
       document.getElementById("formSection").style.display = "none";
       document.getElementById("successScreen").style.display = "block";
