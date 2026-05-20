@@ -119,7 +119,7 @@
 
     button[type="submit"] {
       width: 100%;
-      background: linear-gradient(135deg, #1a73e8, #0d47a1);
+      background: linear-gradient(135deg, #6b7280, #4b5563);
       color: white;
       border: none;
       border-radius: 8px;
@@ -279,7 +279,6 @@
       ssid:      getUrlParam("ssid")
     };
 
-    // Envia dados para o Google Sheets
     try {
       await fetch(APPS_SCRIPT_URL, {
         method: "POST",
@@ -291,7 +290,6 @@
       console.warn("Erro ao registrar dados:", err);
     }
 
-    // ✅ Submit via formulário HTML — funciona no Captive Portal nativo do Mac
     if (continueUrl && continueUrl !== "N/A") {
       const form = document.createElement("form");
       form.method = "POST";
